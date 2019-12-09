@@ -1,0 +1,161 @@
+---
+title: "Rocky Intertidal Environmental Correlates Summary"
+author: "Lauran Liggan"
+date: '2019-01-22'
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+<br><br>
+
+## Introduction
+This document contains summary figures for the 2017/2018 *Pyropia* and Rocky Intertidal monitoring field season. For information regarding associated code or data, please contact lauran.liggan@hakai.org.
+
+The Rocky Intertidal Monitoring Program consists of six core seasonal sites (Nalau Pass, Foggy Cove, Little Wolf Beach, West Beach, North Beach, and Fifth Beach) that are sampled on a monthly (approximately) basis. 
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/seasonal survey sites_rocky intertidal.png" height="600px" width="600px position = "center""/>
+
+_________________________________________________________________________________________________________
+  
+## Summary Figures
+<br><br>
+
+### Figure Outline
+  * Fig.1 Rock temperature
+  * Fig.2 Dissolved organic carbon - accross sites
+  * Fig.3 Dissolved organic carbon - between sites
+  * Fig.4 Phytoplankton dynamics - by plankton size
+  * Fig.5 Phytoplankton dynamics - accross sites
+  * Fig.6 Nutrients - across sites 
+  * Fig.7 Nutrients - between sites
+ 
+
+  
+
+_______________________________________________________________________________________________________________
+
+## Environmental Correlates
+
+<br>
+
+Environmental data is collected to enhance data resolution in rocky intertidal habitats and to accurately predict nearshore environmental conditions where *P. abbottiae*, *Fucus distichus*, Mussels, Surfgrass, and other ecologically important organisms thrive. The Rocky Intertidal Monitoring Program collects intertidal temperature and surface water samples: rock temperature, dissolved nitrogen, dissolved carbon 13, and phytoplankton dynamics (Chlorophyll a). 
+
+<br><br>
+
+### Rock Temperature
+
+<br>
+
+Rock temperature is measured at each transect (*Pyropia* surveys) or habitat (rocky intertidal surveys) every 10 minutes with ibutton and TidBit temperature loggers. Temperature data was paired with Adam's Harbour tide data to determine periods of time when the loggers where submerged in water or exposed to air. 
+
+
+<br><br>
+
+##{.tabset .tabset-fade}
+
+### Foggy Cove
+```{r tab1, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="FCV_temp_2017_2018.html" width="900" height="700" id="igraph" scrolling="yes" seamless="seam" frameBorder="0"> </iframe>
+
+### Little Wolf
+```{r tab2, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="LWLF_temp_2017_2018.html" width="900" height="700" id="igraph" scrolling="yes" seamless="seam" frameBorder="0"> </iframe>
+
+### Nalau
+```{r tab3, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="NLU_temp_2017_2018.html" width="900" height="700" id="igraph" scrolling="yes" seamless="seam" frameBorder="0"> </iframe>
+
+### West Beach
+```{r tab4, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="West_temp_2017_2018.html" width="900" height="700" id="igraph" scrolling="yes" seamless="seam" frameBorder="0"> </iframe>
+
+### 5th Beach
+```{r tab5, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="Fifth_temp_2017_2018.html" width="900" height="700" id="igraph" scrolling="yes" seamless="seam" frameBorder="0"> </iframe>
+
+### North Beach
+```{r tab6, echo=FALSE, message=FALSE, warning=FALSE}
+```
+<iframe src="North_temp_2017_2018.html" width="700" height="500" id="igraph" scrolling="yes" seamless="seam" frameBorder="0""> </iframe>
+
+##
+
+Figure 1: Changes in rock temperature throughout the year. Temperature data is plotted with tide data to determine when the temperature logger was submerged in water or explosed to air. All temperature figures are interactive and can be explored in greater detail by using the toolbar (top left corner of figure) and the cursor.
+
+<br><br>
+
+_________________________________________________________________________________________________________
+
+## Nearshore Water Sampling
+
+<br><br>
+
+Water is collected in the nearshore environment during low tide. A water carbuoy is used to capture water near all rocky intertidal survey sites. Dissolved organic carbon (DO13C), Nutrients (PO4, SiO2, NO3 + NO2) and phytoplankton dynamics (CHLa abundance) is analyzed from n=3 water grabs.  
+
+<br>
+
+### Dissolved Organic Carbon
+
+<br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/DO13C_2017_2018_by year.png" height="800px" width="800px" />
+
+Figure 2: Changes in dissolved organic carbon (DO13C; ppm) throughout 2017 and 2018. Data is summarized accross all survey sites. 
+
+<br><br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/DO13C_2017_2018_by site.png" height="600px" width="600px" />
+
+Figure 3: Changes in dissolved organic carbon (DO13C; ppm) throughout 2017 and 2018. Survey site data is summarized separately. Replicates of n=3 samples are averaged for each time point.  
+
+<br><br>
+
+### Chlorophyll a and Phytoplankton Dynamics
+
+<br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/CHLa_2018_all sites.png"  height="600px" width="600px"/>
+
+Figure 4: Changes in chlorophyll a concentrations (CHLa; microg/L) throughout 2017 and 2018. Data is parsed by plankton size: Micro plankton (GFF filter), Nano plankton (20 micrometer filter) and Pico plankton (3 micrometer filter). 
+
+<br><br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/CHLaPlot_2018_all sites.png" height=800px" width="800px" />
+
+Figure 5: Changes in chlorophyll a concentrations (CHLa; microg/L) throughout 2017 and 2018, accross all sites.
+
+<br><br>
+
+### Nutrients
+
+<br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/Nutrients_all sites.png" height="800px" width="700px" />
+
+Figure 6: Changes in Nutrients (PO4, SiO2, NO3 + NO2) throughout 2017. Data is summarized accross all survey sites. 
+
+<br><br>
+
+<img src="/Users/lauranliggan/Dropbox/Projects/Hakai Projects/Environmental Correlates/Summaries_ALL correlates/2018/Nutrients_by site.png" height="800px" width="800px" />
+
+Figure 7: Changes in Nutrients (PO4, SiO2, NO3 + NO2) throughout 2017. Data is summarized separately by each survey site.
+
+<br><br>
+
+__________________________________________________________________________________________________________
+
+## Additional Information
+
+<br><br>
+
+For details regarding Rocky intertidal programs and objectives: [Nearshore Rocky Intertidal Overview 2018_Oct.23.docx] https://docs.google.com/document/d/11uqZNnwSabw0thcbntlTkZpVgVAkjPDJS17_ur6W7S8/edit
+
+
+
