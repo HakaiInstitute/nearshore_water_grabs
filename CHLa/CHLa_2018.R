@@ -42,7 +42,7 @@ library (Rmisc)
 #   and create some new variables.
 
 ## Set a loading directory ----
-# Save all csv files in CHLa -> 2018 -> Data folder on Dropbox
+# Save all csv files in CHLa -> GitHub projects
 
 setwd("~/Desktop/GitHub projects/nearshore_water_grabs/CHLa") 
 
@@ -50,7 +50,7 @@ getwd()
 
 ## Load DO13C data ----
 
-LL2018_CHLaData <- read.csv(file="CHLa_2017_2018.csv",
+LL2019_CHLaData <- read.csv(file="CHLa data_2019.csv",
                              header           = TRUE,
                              stringsAsFactors = FALSE,
                              colClasses  = c("date"  = "character")) %>%
@@ -70,15 +70,25 @@ LL2018_CHLaData <- read.csv(file="CHLa_2017_2018.csv",
                                       ifelse(monthNum == "11", "November",
                                       ifelse(monthNum == "12", "December",
                                       ifelse(monthNum == "01", "January",NA))))))))))))))) %>%
+                                             
+   mutate(plankton        = as.factor(ifelse(Plankton.Size  == "20um", "Nano",
+                                       ifelse(Plankton.Size == "3um", "Pico", 
+                                       ifelse(Plankton.Size == "Bulk GF/F", "Micro Bulk",
+                                       ifelse(Plankton.Size == "GF/F", "Micro", NA )))))) %>%                             
   
   mutate(Site             = as.factor(ifelse(site == "ROCKY02", "Foggy Cove",
                                       ifelse(site == "ROCKY04", "Little Wolf", 
                                       ifelse(site == "ROCKY05", "Nalau",
                                       ifelse(site == "ROCKY06", "West Beach",
                                       ifelse(site == "ROCKY07", "North Beach",
-                                      ifelse(site == "ROCKY03", "5th Beach",NA))))))))
+                                      ifelse(site == "ROCKY03", "5th Beach",
+                                      ifelse(site == "PRUTH", "Pruth Bay",
+                                      ifelse(site == "QCS01", "QCS01",
+                                      ifelse(site == "WBCH01", "WBCH01", 
+                                      ifelse(site == "NBCH01", "NBCH01",
+                                      ifelse(site == "PRUTH", "PRUTH",NA)))))))))))))
 
-glimpse(LL2018_CHLaData)
+glimpse(LL2019_CHLaData)
 
 # --- Load data end ---
 
@@ -86,52 +96,54 @@ glimpse(LL2018_CHLaData)
 
 ## Clean DO13C dataset ----
 
-CHla2018 <- na.omit(LL2018_CHLaData)
-NROW(CHla2018)
+CHla2019 <- na.omit(LL2019_CHLaData)
+NROW(CHla2019)
 
 # recode late 2017 June months to "07"
 
-CHla2018$monthNum <- as.character(CHla2018$monthNum )
+LL2019_CHLaData$monthNum <- as.character(LL2019_CHLaData$monthNum )
 
-CHla2018$monthNum[ CHla2018$date > ymd( "2017-06-15" ) & 
-                     CHla2018$date < ymd( "2017-07-01" ) ] <- "07"
+LL2019_CHLaData$monthNum[ LL2019_CHLaData$date > ymd( "2017-06-15" ) & 
+                     LL2019_CHLaData$date < ymd( "2017-07-01" ) ] <- "07"
 
-CHla2018$monthNum <- factor(CHla2018$monthNum )
+LL2019_CHLaData$monthNum <- factor(LL2019_CHLaData$monthNum )
 
-CHla2018$month <- as.character( CHla2018$month)
-CHla2018$month[ CHla2018$date > ymd( "2017-06-15" ) & 
-                  CHla2018$date < ymd( "2017-07-01" ) ] <- "July"
+LL2019_CHLaData$month <- as.character( LL2019_CHLaData$month)
+LL2019_CHLaData$month[ LL2019_CHLaData$date > ymd( "2017-06-15" ) & 
+                  LL2019_CHLaData$date < ymd( "2017-07-01" ) ] <- "July"
 
 # Factor month in proper order
-CHla2018$month <- factor(CHla2018$month)
+LL2019_CHLaData$month <- factor(LL2019_CHLaData$month)
 
-CHla2018$month <- factor(CHla2018$month, levels = c("Januray", "Feburary", "March", "April","May", "June", "July", "August", "September", "October", "November", "December"))
+LL2019_CHLaData$month <- factor(LL2019_CHLaData$month, levels = c("January", "February", "March", "April","May", "June", "July", "August", "September", "October", "November", "December"))
 
 # Create a year column
-CHla2018$year<- year(CHla2018$date)
+LL2019_CHLaData$year<- year(LL2019_CHLaData$date)
 
 # View data
-glimpse(CHla2018)
+glimpse(LL2019_CHLaData)
+
+# filter out data above 1m
+LL2019_CHLaData1m<- filter(LL2019_CHLaData, line_out_depth < 1)
 
 # --- Clean data end ---
 
 # --- Summarize dataset ---
 ## Summarize DO13C dataset ----
 
-CHlaSum2018<- summarySE(CHla2018,
+CHlaSum2019<- summarySE(LL2019_CHLaData1m,
                          measurevar="Chla", 
-                         groupvars=c("month", "year", "Site", "Plankton.Size", 
+                         groupvars=c("month", "year", "Site", "plankton", 
                                      na.rm=FALSE))
-CHlaSum2018
+CHlaSum2019
 
-PhaeoSum2018<- summarySE(CHla2018,
+PhaeoSum2019<- summarySE(LL2019_CHLaData1m,
                         measurevar="Phaeo", 
-                        groupvars=c("month", "year", "Site", "Plankton.Size", 
+                        groupvars=c("month", "year", "Site", "plankton", 
                                     na.rm=FALSE))
-PhaeoSum2018
+PhaeoSum2019
 
 
-CHLa.Micro<- filter(CHla2018, Plankton.Size == "Micro", year == "2018")
 
 # --- Summarize dataset end ---
 
@@ -144,15 +156,14 @@ theme_set(theme_classic(base_size = 16))
 
 pd <- 0.5
 
-cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#660066", "#666600")
 
 # by site
 # trends between sites
 
-CHlaSum2018$Plankton <- CHlaSum2018$Plankton.Size
-CHLaFigSites <- ggplot(data=subset(CHlaSum2018, year == "2018"), aes(x=month, 
+CHLaFigSites <- ggplot(data=CHlaSum2019, aes(x=month, 
                                               y=Chla, 
-                                              col= Plankton,
+                                              col= plankton,
                                               ymin=Chla-se,
                                               ymax=Chla+se)) +
   geom_errorbar( position=position_dodge(pd), width=.5) +
@@ -160,48 +171,47 @@ CHLaFigSites <- ggplot(data=subset(CHlaSum2018, year == "2018"), aes(x=month,
   xlab("Month")+ 
   geom_point( position=position_dodge(pd), size=3) +
   theme(panel.grid.major = element_line(colour = "grey90", linetype = 3)) +
-  geom_line( position=position_dodge(pd), aes(group=Plankton, linetype= Plankton)) +
-  facet_wrap(~Site, ncol = 3)+
+  geom_line( position=position_dodge(pd), aes(group=plankton, linetype= plankton)) +
+  facet_grid(Site~year)+
   theme(axis.text=element_text(size=12))+
   scale_color_manual(values = cbPalette) +
   theme(axis.text.x=element_text(hjust=1)) +
   theme(legend.justification=c(0,1), legend.position=c(0.01,0.99), legend.text = element_text(size = 12)) +
-  scale_x_discrete(limits = c("Feburary", "March", "April", "May","June", "July", "August"), 
-                   breaks = c("Feburary", "March", "April", "May","June", "July", "August")) +
-  ggtitle(~italic("Nearshore Surface Water"), "CHLa 2018") +
+  ggtitle(~italic("Nearshore Surface Water"), "CHLa") +
   theme(axis.text.x=element_text(hjust=1, angle=45))  
 
 CHLaFigSites
 
 # Print DO13C
-CHLaFig_print <- ggsave(plot = CHLaFigSites, width = 8, height = 9, dpi = 600, filename = "CHLa_2018_by site.png")
+CHLaFig_print <- ggsave(plot = CHLaFigSites, width = 15, height = 17, dpi = 600, filename = "CHLa_2019_by site.png")
 
 
 
 #dot plot of all sites
-CHLaPlot <- ggplot(data=subset(CHla2018, year == "2018"), aes(x=month, 
+CHLaPlot <- ggplot(data=CHlaSum2019, aes(x=month, 
                                      y=Chla, col=Site)) +
   geom_point(shape = 16, size = 3, position=position_dodge(pd)) +
   scale_fill_manual(values = cbPalette) +
   scale_color_manual(values = cbPalette) +
-  ggtitle(~italic("Nearshore Surface Water"), "CHLa 2018") +
+  facet_wrap(~year) +
+  ggtitle(~italic("Nearshore Surface Water"), "CHLa") +
   ylab("Chlorophyll (microg/L)") +
   xlab("Month") +
   theme(panel.grid.major = element_line(colour = "grey90", linetype = 3)) +
   theme(axis.text.x=element_text(hjust=1)) +
-  theme(legend.justification=c(0,1), legend.position=c(0.76,1.1), legend.text = element_text(size = 12), legend.background = element_rect(linetype = 2, size = 0.5, colour = 1)) +
+  theme(legend.justification=c(0,1), legend.position=c(0.01,0.97), legend.text = element_text(size = 12), legend.background = element_rect(linetype = 2, size = 0.5, colour = 1)) +
   theme(plot.title = element_text(hjust = -0.01, vjust=1.12, size =20)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 CHLaPlot
 
 # Print 
-CHla2018Fig_print <- ggsave(plot =  CHLaPlot, width = 8, height = 6, dpi = 600, filename = "CHLaPlot_2018_all sites.png")
+CHla2018Fig_print <- ggsave(plot =  CHLaPlot, width = 12, height = 8, dpi = 600, filename = "CHLaPlot_2019_all sites.png")
 
 # trends accross all sites
 
-CHla2018$Plankton <- CHla2018$Plankton.Size
-CHla2018Fig <- ggplot(data=subset(CHla2018, year == "2018"), aes(month, Chla, col=Plankton)) +
+
+CHla2017Fig <- ggplot(data=subset(CHlaSum2019, year == "2017"), aes(month, Chla, col=plankton)) +
   geom_boxplot() + 
   theme(panel.grid.major = element_line(colour = "grey90", linetype = 3)) +
   scale_color_manual(values = cbPalette) + 
@@ -209,16 +219,63 @@ CHla2018Fig <- ggplot(data=subset(CHla2018, year == "2018"), aes(month, Chla, co
   xlab("Month")+ 
   theme(axis.text.x=element_text(hjust=1)) +
   theme(axis.text.y=element_text(hjust=1)) +
-  ggtitle(~italic("Nearshore Surface Water"), "CHLa 2018") + 
+  ggtitle("CHLa 2017 (<1m depth)") + 
   theme(plot.title = element_text(hjust = -0.01, vjust=1.12, size =20)) +
-  theme(legend.justification=c(0,0.5), legend.position=c(0.8,1),legend.text = element_text(size = 12)) +
+  theme(legend.justification=c(0,1), legend.position=c(0.8,0.97),legend.text = element_text(size = 12)) +
   theme(axis.text=element_text(size=12))+
-  theme(axis.text.x=element_text(hjust=1, angle=45))
+  theme(axis.title.x=element_blank(),axis.text.x=element_blank())  
+
+
+CHla2017Fig
+
+
+CHla2018Fig <- ggplot(data=subset(CHlaSum2019, year == "2018"), aes(month, Chla, col=plankton)) +
+  geom_boxplot() + 
+  theme(panel.grid.major = element_line(colour = "grey90", linetype = 3)) +
+  scale_color_manual(values = cbPalette) + 
+  ylab("Chlorophyll (microg/L)") +
+  xlab("Month")+ 
+  theme(axis.text.x=element_text(hjust=1)) +
+  theme(axis.text.y=element_text(hjust=1)) +
+  ggtitle("CHLa 2018") + 
+  theme(plot.title = element_text(hjust = -0.01, vjust=1.12, size =20)) +
+  theme(legend.position="none") +
+  theme(axis.text=element_text(size=12))+
+  theme(axis.title.x=element_blank(),axis.text.x=element_blank())  
+
 
 CHla2018Fig
 
+
+CHla2019Fig <- ggplot(data=subset(CHlaSum2019, year == "2019"), aes(month, Chla, col=plankton)) +
+  geom_boxplot() + 
+  theme(panel.grid.major = element_line(colour = "grey90", linetype = 3)) +
+  scale_color_manual(values = cbPalette) + 
+  ylab("Chlorophyll (microg/L)") +
+  xlab("Month")+ 
+  theme(axis.text.x=element_text(hjust=1)) +
+  theme(axis.text.y=element_text(hjust=1)) +
+  ggtitle("CHLa 2019") + 
+  theme(plot.title = element_text(hjust = -0.01, vjust=1.12, size =20)) +
+  theme(legend.position="none") +
+  theme(axis.text=element_text(size=12))+
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) 
+
+
+CHla2019Fig
+
+# stack all graphs into one figure
+
+library(grid)
+gl = lapply(list(CHla2017Fig, CHla2018Fig,CHla2019Fig), ggplotGrob) 
+library(gtable)
+g = do.call(rbind, c(gl, size="first"))
+g$widths = do.call(unit.pmax, lapply(gl, "[[", "widths"))
+grid.newpage()
+grid.draw(g) 
+
 # Print 
-CHla2018Fig_print <- ggsave(plot = CHla2018Fig, width = 6, height = 6, dpi = 600, filename = "CHLa_2018_all sites.png")
+CHla2019Fig_print <- ggsave(plot = g, width = 7, height = 10, dpi = 600, filename = "CHLa_2019_all sites.png")
 
 
 
