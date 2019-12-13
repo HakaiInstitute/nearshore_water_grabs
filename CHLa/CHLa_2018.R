@@ -126,7 +126,7 @@ LL2019_CHLaData$year<- year(LL2019_CHLaData$date)
 glimpse(LL2019_CHLaData)
 
 # filter out data above 1m
-LL2019_CHLaData1m<- filter(LL2019_CHLaData, line_out_depth < 1, Phaeo < 10)
+LL2019_CHLaData1m<- filter(LL2019_CHLaData, line_out_depth < 1, Phaeo < 10, Chla <10)
 
 # --- Clean data end ---
 
